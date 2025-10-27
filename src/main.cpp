@@ -1,22 +1,16 @@
 #include <Arduino.h>
+#include <ESPAsyncWebServer.h>
+#include <WiFi.h>
+#include <QTRSensors.h>
+#include <SparkFun_Qwiic_OTOS_Arduino_Library.h>
+#include <Wire.h>
 
-/*********
-  Rui Santos & Sara Santos - Random Nerd Tutorials
-  Complete project details at https://RandomNerdTutorials.com/getting-started-esp32-c3-super-mini/
-*********/
-
-const int ledPin = 8;
+int state = 0;
 
 void setup() {
     Serial.begin(115200);
-    pinMode(ledPin, OUTPUT);
 }
 
 void loop() {
-    digitalWrite(ledPin, HIGH);
-    Serial.println("LED OFF");
-    delay(1000);
-    digitalWrite(ledPin, LOW);
-    Serial.println("LED ON");
-    delay(5000);
+
 }
