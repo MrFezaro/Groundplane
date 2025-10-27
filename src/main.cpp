@@ -1,19 +1,23 @@
 #include <Arduino.h>
 
-const int LED_PIN = 8; // Define the GPIO for the LED on SuperMini
+/*********
+  Rui Santos & Sara Santos - Random Nerd Tutorials
+  Complete project details at https://RandomNerdTutorials.com/getting-started-esp32-c3-super-mini/
+*********/
 
-void setup()
-{
-    Serial.begin(115200);            // Start serial communication at 115200 baud rate
-    Serial.println("Hello, ESP32!"); // Print message to serial monitor
-    pinMode(LED_PIN, OUTPUT);        // Set LED_PIN as output
+// ESP32 C3 Super Mini on-board LED (works with inverted logic)
+const int ledPin = 8;
+
+void setup() {
+    pinMode(ledPin, OUTPUT);
 }
 
-void loop()
-{
-    Serial.println("loop()");
-    digitalWrite(LED_PIN, HIGH); // Turn LED on
-    delay(500);                 // Wait 1 second
-    digitalWrite(LED_PIN, LOW);  // Turn LED off
-    delay(500);                 // Wait 1 second
+void loop() {
+    Serial.begin(115200);
+    digitalWrite(ledPin, HIGH);
+    Serial.println("LED OFF");
+    delay(1000);
+    digitalWrite(ledPin, LOW);
+    Serial.println("LED ON");
+    delay(5000);
 }
