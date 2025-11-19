@@ -5,14 +5,12 @@
 #include <SparkFun_Qwiic_OTOS_Arduino_Library.h>
 #include <Wire.h>
 #include <Servo.h>
-#include "PIDino.hpp"
-
+#include <PIDino.hpp>
 
 Servo M1, M2;
 QTRSensors qtr;
+PIDino PID1(500, 1, 0, 0, 1000);
 
-// Create a PIDino object with the following parameters:
-PIDino pid1(500, 0, 0, 10, 0.01, 0.01);
 
 constexpr uint8_t SensorCount = 2;
 uint16_t sensorValues[SensorCount];
@@ -39,15 +37,24 @@ void setup()
 }
 
 void loop(){
-    uint16_t input = qtr.readLineBlack(sensorValues);
+    const uint16_t input = qtr.readLineBlack(sensorValues);
 
-    Serial.println(input);
+    const float pidOut = PID1.compute(input);
 
-    const float output = pid1.compute(input); // Compute the PID output
-    Serial.println(output); // Print the output to the serial monitor
+    // Calculate motor signals
+    int m1 = 1200 + (pidOut - 1000);
+    int m2 = 1200 + (1000 - pidOut);
 
-    M1.writeMicroseconds(output);
-    M2.writeMicroseconds(-output);
 
+    // Clamp values to safe range
+    m1 = constrain(m1, 1000, 2000);
+    m2 = constrain(m2, 1000, 2000);
+
+    M1.writeMicroseconds(m1);
+    M2.writeMicroseconds(m2);
+
+    Serial.print("PID: "); Serial.print(pidOut);
+    Serial.print("  M1: "); Serial.print(m1);
+    Serial.print("  M2: "); Serial.println(m2);
     delay(10);
 }
